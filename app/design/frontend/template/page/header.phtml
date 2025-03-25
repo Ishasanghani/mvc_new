@@ -1,0 +1,151 @@
+<?php $parentcategoryDatas = $this->getParentCategory(); ?>
+<?php $childCategories = $this->getChildCategory(); ?>
+<?php $customer = $this->getCustomerId();
+
+?>
+<style>
+    .icon-text {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .cartContainer {
+        position: relative;
+        display: inline-block;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -10px;
+        background-color: red;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 4px 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<div>
+    <nav class="navbar navbar-expand-lg shadow-sm">
+        <div class="container-fluid">
+            <!-- Logo -->
+            <a class="navbar-brand" href="#">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKdf1g8piKb1N01w_msuOCsNYnBat79lZFaA&s" alt="Logo" width="200">
+            </a>
+
+            <!-- Mobile Toggle Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- 
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> -->
+
+            <!-- Navbar Items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+
+                    <?php if ($customer->getcustomerId()): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle icon-text" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 9a5.507 5.507 0 0 0-4.546 2.916.5.5 0 0 0 .433.749h8.226a.5.5 0 0 0 .433-.749A5.507 5.507 0 0 0 8 9z" />
+                                </svg>
+                                <?php echo $customer->getFirstName(); ?> <!-- Show user's first name -->
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="<?php echo $this->getUrl('customer/account_profile/dashboard'); ?>">Profile</a></li>
+                                <li><a class="dropdown-item" href="<?php echo $this->getUrl('customer/account/logout'); ?>">Logout</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link icon-text" href="<?php echo $this->getUrl('customer/account/login') ?>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-person" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 9a5.507 5.507 0 0 0-4.546 2.916.5.5 0 0 0 .433.749h8.226a.5.5 0 0 0 .433-.749A5.507 5.507 0 0 0 8 9z" />
+                                </svg>
+                                Login
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    <!-- <a class="nav-link icon-text" href="<?php echo $this->getUrl('customer/account/login') ?>">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-person" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8 9a5.507 5.507 0 0 0-4.546 2.916.5.5 0 0 0 .433.749h8.226a.5.5 0 0 0 .433-.749A5.507 5.507 0 0 0 8 9z" />
+                            </svg>
+                            Login
+                        </a> -->
+
+                    <li class="nav-item">
+                        <div class="cartContainer">
+                            <a class="nav-link icon-text" href="<?php echo $this->getUrl('checkout/cart_item/index'); ?>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-cart" viewBox="0 0 16 16">
+                                    <path
+                                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                                </svg>
+                                Cart
+                            </a>
+                            <span id="cart-count" class="cart-badge"><?php echo $this->getCount()?></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Parent and Child Categories -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="text-align: center; color: #D10063;">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mx-auto gap-3 ">
+                    <?php foreach ($parentcategoryDatas as $parentcategoryData): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="navbarDropdown<?php echo $parentcategoryData->getCategoryId(); ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <?php echo $parentcategoryData->getName(); ?>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown<?php echo $parentcategoryData->getCategoryId(); ?>">
+                                <?php foreach ($childCategories as $childCategory): ?>
+                                    <?php if ($parentcategoryData->getCategoryId() == $childCategory->getParentId()): ?>
+                                        <li> <a class="dropdown-item" href="<?php echo $this->getUrl('catalog/product/list') . '/?category_id=' . $childCategory->getCategoryId(); ?>">
+                                                <?php echo $childCategory->getName(); ?>
+                                            </a></li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- <script>
+        let filter = {
+            xyz : function(){
+              // alert("1");
+               this.p=10;
+            },
+            abc: function(){
+                
+             //  alert(this.p);
+            }   
+        }
+        filter.xyz();
+        filter.abc();
+    </script> -->
+</div>

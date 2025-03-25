@@ -1,0 +1,198 @@
+<?php $categoryData = $this->getCategoryProductCount();
+
+$categoryNames = [];
+$productCount = [];
+$productpercentage = [];
+foreach ($categoryData as $category) {
+    $categoryNames[] = $category->getCategoryName();
+    $productCount[] = $category->getProductCount(); // Extract category names
+    $productpercentage[] = ($category->getProductCount() / $category->getTotalProduct()) * 100;
+}
+$categoryNamesJson = json_encode($categoryNames);
+$productpercentageJson = json_encode($productpercentage);
+$productCountJson = json_encode($productCount);
+
+$orders = $this->getOrderProductCount();
+
+$categoryName = [];
+$orderCount = [];
+foreach ($orders as $order) {
+    $categoryName[] = $order->getCategoryName();
+    $orderCount[] = $order->getOrderCount();
+}
+$categoryorderNameJson = json_encode($categoryName);
+$orderCountJson = json_encode($orderCount);
+
+?>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Admin Dashboard</h2>
+    <div class="d-flex justify-content-end m-3 mx-4 gap-3">
+    <a href="<?php echo $this->getUrl("*/*/exportCsv") ?>" class="add-btn btn btn-success">Download Csv</a>
+   
+</div>
+    <div class="row">
+        <!-- Orders Count -->
+        <div class="col-md-3">
+            <div class="card dashboard-card bg-primary text-white p-3">
+                <div class="card-body d-flex align-items-center justify-content-between ">
+                    <div class="me-4">
+                        <h5 class="card-title">Orders</h5>
+                        <h2 id="orderCount"><?php echo $this->getTotalOrder()['total_order'] ?></h2>
+                    </div>
+                    <i class="fas fa-shopping-cart card-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Count -->
+        <div class="col-md-3">
+            <div class="card dashboard-card bg-success text-white p-3">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="me-4">
+                        <h5 class="card-title">Products</h5>
+                        <h2 id="productCount"><?php echo $this->getTotalProduct()['total_product']; ?></h2>
+                    </div>
+                    <i class="fas fa-boxes card-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Count -->
+        <div class="col-md-3">
+            <div class="card dashboard-card bg-warning text-white p-3">
+                <div class="card-body d-flex align-items-center justify-content-between ">
+                    <div class="me-4">
+                        <h5 class="card-title">Categories</h5>
+                        <h2 id="categoryCount"><?php echo $this->getTotalCategory()['total_category'] ?></h2>
+                    </div>
+                    <i class="fas fa-list card-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Count -->
+        <div class="col-md-3">
+            <div class="card dashboard-card bg-danger text-white p-3">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="me-4">
+                        <h5 class="card-title">Customers</h5>
+                        <h2 id="customerCount">250</h2>
+                    </div>
+                    <i class="fas fa-users card-icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="text-center m-4">Product & Category Analysis</h2>
+
+    <div class="row m-2">
+        <!-- Product Count per Category -->
+        <div class="col-md-6">
+            <div class="card dashboard-card p-3">
+                <h5 class="text-center">Products per Category</h5>
+                <canvas id="productCategoryChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Category Distribution -->
+        <div class="col-md-6">
+            <div class="card dashboard-card p-3">
+                <h5 class="text-center">Category Distribution</h5>
+                <canvas id="categoryDistributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col-md-6">
+            <div class="card dashboard-card p-3">
+                <h5 class="text-center">Order per Category</h5>
+                <canvas id="orderProductChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to generate random colors
+        function generateRandomColors(num) {
+            let colors = [];
+            for (let i = 0; i < num; i++) {
+                let color = `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.7)`;
+                colors.push(color);
+            }
+            return colors;
+        }
+
+        // Get the number of categories dynamically
+        const categoryLabels = <?php echo $categoryNamesJson; ?>;
+        const productCounts = <?php echo $productCountJson; ?>;
+        const productPercentages = <?php echo $productpercentageJson; ?>;
+        const categoryName = <?php echo $categoryorderNameJson?>;
+        const orderCount = <?php echo $orderCountJson?>;
+
+        // Generate random colors based on the number of categories
+        let dynamicColors = generateRandomColors(categoryLabels.length);
+        let orderproductcolor = generateRandomColors(categoryName.length);
+        // Product Count per Category - Bar Chart
+        const ctx1 = document.getElementById("productCategoryChart").getContext("2d");
+        new Chart(ctx1, {
+            type: "bar",
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    label: "Products Count",
+                    data: productCounts,
+                    backgroundColor: dynamicColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Category Distribution - Pie Chart
+        const ctx2 = document.getElementById("categoryDistributionChart").getContext("2d");
+        new Chart(ctx2, {
+            type: "pie",
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: productPercentages,
+                    backgroundColor: dynamicColors
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+
+        const ctx3 = document.getElementById('orderProductChart').getContext("2d");
+        new Chart(ctx3,{
+            type:"bar",
+            data:{
+                labels:categoryName,
+                datasets:[{
+                    data:orderCount,
+                    backgroundColor:orderproductcolor
+                }]
+            },
+            options:{
+                responsive:true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+ 
+            }
+        });
+    });
+</script>

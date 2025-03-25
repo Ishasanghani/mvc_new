@@ -1,0 +1,21 @@
+<?php $addressData = $this->getOrderAddressData();
+
+?>
+<div class="row d-flex mt-4 m-1">
+    <!-- Billing Address -->
+    <div class="d-flex">
+        <?php foreach ($addressData as $address): ?>
+            <div class="card shadow p-4 col-md-6">
+                <h4 class="text-center text-dark"> <?php echo ($address->getTypeofaddress() == 'billing') ? "Billing Address" : "Shipping Address"; ?></h4>
+
+                <p><strong>Address:</strong> <?php echo $address->getStreet(); ?></p>
+                <p><strong>City:</strong> <?php echo $address->getCity(); ?></p>
+                <p><strong>Region:</strong><?php echo $address->getRegion(); ?></p>
+                <p><strong>Country:</strong> <?php echo $address->getCountry(); ?></p>
+                <p><strong>Zip Code:</strong> <?php echo $address->getZipcode(); ?></p>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+
+</div>

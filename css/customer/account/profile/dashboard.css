@@ -1,0 +1,52 @@
+.d-flex {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+button {
+    white-space: nowrap;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Ensure all buttons have the same height */
+.btn {
+    height: 40px;
+}
+
+.btn-danger,
+.btn-success {
+    width: auto;
+}
+
+.remove-address,
+.setDefault {
+    writing-mode: horizontal-tb;
+    text-align: center;
+}

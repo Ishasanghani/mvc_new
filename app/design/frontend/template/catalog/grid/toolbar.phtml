@@ -1,0 +1,104 @@
+<?php
+$totalRecord = $this->getTotalRecord();
+?>
+
+<div class="container mt-5">
+    <h5>Total Records: <span id="totalRecords"><?php echo $totalRecord; ?></span></h5>
+
+    <!-- Limit Selection -->
+    <label for="limit">Records per page:</label>
+    <select id="limit" class="form-select w-auto d-inline">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="15">15</option>
+    </select>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center mt-3" id="pagination"></ul>
+    </nav>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let totalRecords = parseInt(document.getElementById('totalRecords').textContent.trim(), 10) || 0;
+    let baseUrl = window.location.origin + window.location.pathname.replace(/\/+$/, "");
+    let urlParams = new URLSearchParams(window.location.search);
+
+    let limit = parseInt(urlParams.get('limit')) || 10; // Default limit to 10
+    let page = parseInt(urlParams.get('page')) || 1; // Default page to 1
+    document.getElementById("limit").value = limit;
+
+    let totalPages = Math.max(1, Math.ceil(totalRecords / limit));
+
+    function updatePagination() {
+        let pagination = document.getElementById('pagination');
+        pagination.innerHTML = ""; // Clear pagination
+
+        if (totalPages <= 1) return; // Hide pagination if only 1 page
+
+        // Previous Button
+        let prev = document.createElement("li");
+        prev.className = `page-item ${page <= 1 ? 'disabled' : ''}`;
+        prev.innerHTML = `<a class="page-link" href="#" onclick="changePage(event, ${page - 1})">&laquo; Previous</a>`;
+        pagination.appendChild(prev);
+
+        // Page Numbers
+        for (let i = 1; i <= totalPages; i++) {
+            let pageItem = document.createElement("li");
+            pageItem.className = `page-item ${i === page ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" onclick="changePage(event, ${i})">${i}</a>`;
+            pagination.appendChild(pageItem);
+        }
+
+        // Next Button
+        let next = document.createElement("li");
+        next.className = `page-item ${page >= totalPages ? 'disabled' : ''}`;
+        next.innerHTML = `<a class="page-link" href="#" onclick="changePage(event, ${page + 1})">Next &raquo;</a>`;
+        pagination.appendChild(next);
+    }
+
+    window.changePage = function(event, newPage) {
+        event.preventDefault();
+        if (newPage < 1 || newPage > totalPages) return;
+        page = newPage;
+        updateURL();
+    };
+
+    function updateURL() {
+        let urlParams = new URLSearchParams(window.location.search);
+
+        // Preserve existing filters if `filter` is defined
+        if (typeof filter !== "undefined" && filter.data) {
+            Object.keys(filter.data).forEach((key) => {
+                if (filter.data[key]) {
+                    urlParams.set(key, filter.data[key]);
+                } else {
+                    urlParams.delete(key);
+                }
+            });
+        }
+
+        // Update page and limit
+        urlParams.set("page", page);
+        urlParams.set("limit", limit);
+
+        let newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+        window.history.pushState({}, "", newUrl); // ✅ Update URL without reload
+        if (typeof filter !== "undefined" && typeof filter.fetchFilteredProducts === "function") {
+            filter.fetchFilteredProducts(); // ✅ Fetch new data dynamically
+        }
+
+        updatePagination(); // ✅ Refresh pagination UI
+    }
+
+    // Handle limit change
+    document.getElementById("limit").addEventListener("change", function () {
+        limit = parseInt(this.value);
+        page = 1; // Reset to first page
+        updateURL();
+    });
+
+    updatePagination();
+});
+</script>

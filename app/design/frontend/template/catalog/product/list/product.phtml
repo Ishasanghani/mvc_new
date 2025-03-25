@@ -1,0 +1,48 @@
+<?php $productsdata = $this->getProductData();
+
+
+?>
+<section class="col-md-9">
+
+    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+
+    <div id="product-list" class="row">
+        <?php
+        $selectedPriceRange = isset($_GET['price']) ? explode('-', $_GET['price']) : null;
+        $minPrice = $selectedPriceRange && array_key_exists(0, $selectedPriceRange) ? (int)$selectedPriceRange[0] : null;
+        $maxPrice = $selectedPriceRange && array_key_exists(1, $selectedPriceRange) ? (int)$selectedPriceRange[1] : null;
+        ?>
+        <?php foreach ($productsdata as $product): ?>
+            <?php $productPrice = $product->getPrice();
+            $inPriceRange = true;
+
+            if ($minPrice != null && $maxPrice != null) {
+                $inPriceRange = $productPrice >= $minPrice && $productPrice <= $maxPrice;
+            } elseif ($minPrice != null) {
+                $inPriceRange = $productPrice >= $minPrice;
+            } elseif ($maxPrice != null) {
+                $inPriceRange = $productPrice <= $maxPrice;
+            }
+
+            if ($inPriceRange):
+            ?>
+                <div class="col-md-4 mb-4">
+                    <a href="<?php echo $this->getUrl('catalog/product/view') . '/?product_id=' . $product->getProductId(); ?>" style="text-decoration:none;">
+                        <div class="card product-card p-2 text-center">
+                            <img src="http://localhost/mvc_new/<?php echo $product->getMainImage(); ?>" alt="<?php echo $product->getName(); ?>" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title" id="product-title"><?php echo $product->getName(); ?></h5>
+                                <p class="card-text">Price: ₹<?php echo number_format($product->getPrice(), 2); ?></p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+        <?php $this->getChildHtml('toolbar'); ?>
+    </nav>
+</section>

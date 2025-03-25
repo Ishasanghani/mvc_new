@@ -1,0 +1,46 @@
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .login-container {
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-prim {
+        background-color: #d10063;
+        color: white;
+        border: none;
+    }
+
+    .btn-prim:hover {
+        background-color: #a8004a;
+    }
+</style>
+
+<div class="login-container">
+    <h2 class="text-center mb-4" style="color: #d10063;">Admin Login</h2>
+
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+    <?php endif; ?>
+
+    <form method="POST" action="<?php echo $this->getUrl('*/*/loginPost') ?>">
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" name="admin_user[username]" placeholder="Enter admin username" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="admin_user[password_hash]" placeholder="Enter password" required>
+        </div>
+
+        <button type="submit" class="btn-prim w-100 py-2">Login</button>
+    </form>
+</div>

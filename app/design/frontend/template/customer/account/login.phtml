@@ -1,0 +1,53 @@
+<div class="login-container">
+    <h2 class="text-center mb-4" style="color: #d10063;">User Login</h2>
+
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+    <?php endif; ?>
+
+    <!-- Normal Login Form -->
+    <form method="POST" action="<?php echo $this->getUrl('*/*/validate') ?>" id="loginForm">
+        <div class="mb-3">
+            <label class="form-label">E-mail</label>
+            <input type="text" class="form-control" name="customer_account[email]" placeholder="Enter admin username" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="customer_account[password_hash]" placeholder="Enter password" required>
+        </div>
+
+        <div class="text-center mt-3">
+            <p>
+                Forget password? 
+                <a href="http://localhost/mvc_new/customer/account/forgetpassword"  style="color: #d10063; font-weight: 600;">
+                    Add a new password
+                </a>
+            </p>
+        </div>
+
+        <button type="submit" class="btn-prim w-100 py-2">Login</button>
+    </form>
+
+    
+
+    <div class="text-center mt-3">
+        <p>Not registered? 
+            <a href="<?php echo $this->getUrl('customer/account/registration') ?>" style="color: #d10063; font-weight: 600;">
+                Register here
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function showForgetPassword() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('forgetPasswordForm').style.display = 'block';
+    }
+
+    function showLogin() {
+        document.getElementById('forgetPasswordForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+    }
+</script>

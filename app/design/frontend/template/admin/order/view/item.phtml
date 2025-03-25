@@ -1,0 +1,30 @@
+<?php $orderItems = $this->getItemData();?>
+ <!-- Order Items -->
+    <h5>Ordered Items</h5>
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Item Photo</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach($orderItems as $orderItem):?>
+                <?php $product = Mage::getModel('catalog/product')->load($orderItem->getProductId());
+            
+                ?>
+            <tr>
+                <td><img src="<?php echo Mage::getBaseUrl().$product->getFilePath()['main_image']?>" style="width: 80px; height: 80px; object-fit: cover;"></td>
+                <td><?php echo $product->getName()?></td>
+                <td><?php echo $orderItem->getProductQuantity()?></td>
+                <td><?php echo $orderItem->getPrice()?></td>
+                <td><?php echo $orderItem->getSubTotal()?></td>
+            </tr>
+            <?php endforeach;?>
+        </tbody>
+       
+    </table>
+    </div>

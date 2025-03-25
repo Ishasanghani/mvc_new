@@ -1,0 +1,310 @@
+<?php
+$billing = $this->billingInfo();
+$shipping = $this->shippingInfo();
+$email = $this->getEmail();
+
+?>
+<style>
+    .container {
+        max-width: 900px;
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2,
+    h4 {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        background-color: #fafafa;
+    }
+
+    .btn-primary {
+        background-color: #fb2e86;
+        border: none;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 18px;
+        width: 100%;
+    }
+
+    .btn-primary:hover {
+        background-color: #d22672;
+    }
+</style>
+
+
+<div class="container">
+    <h2 class="text-center mb-4">Billing and Shipping Details</h2>
+
+    <form action="<?php echo $this->getUrl("*/*/save"); ?>" method="POST" id="addressForm">
+        <!-- Personal Details -->
+        <div class="form-section">
+            <h4>Personal Information</h4>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="first_name" class="form-label">First Name</label>
+                    <input type="text" class="form-control validate-required validate-name" id="fname" name="personal[fname]" placeholder="First name" value="<?php echo $billing->getFname(); ?>" required>
+                   
+                </div>
+                <div class="col-md-6">
+                    <label for="last_name" class="form-label">Last Name</label>
+                    <input type="text" class="form-control validate-required validate-name" id="lname" name="personal[lname]" placeholder="Last name" value="<?php echo $billing->getLname(); ?>" required>
+                   
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email ID</label>
+                    <input type="email" class="form-control validate-required validate-email" id="email" name="email" placeholder="Enter email" value="<?php echo $email ?>" required>
+                    
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="text" class="form-control validate-required validate-phone" id="phone" name="personal[phone]" value="<?php echo $billing->getPhone(); ?>" placeholder="Phone number" required>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Address -->
+        <div class="form-section">
+            <h4>Billing Address</h4>
+            <input type="hidden" value="<?php echo $billing->getAddressId(); ?>" name="billing[address_id]">
+
+            <div class="mb-3">
+                <label for="billing_street" class="form-label">Street Address</label>
+                <input type="text" class="form-control validate-required validate-address" id="billing_street" name="billing[street]" value="<?php echo $billing->getStreet(); ?>" placeholder="Street address" required>
+              
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="billing_city" class="form-label">City</label>
+                    <input type="text" class="form-control validate-required validate-name" id="billing_city" name="billing[city]" value="<?php echo $billing->getCity(); ?>" placeholder="City" required>
+                   
+                </div>
+                <div class="col-md-6">
+                    <label for="billing_region" class="form-label">Region (State)</label>
+                    <input type="text" class="form-control validate-required validate-name" id="billing_region" name="billing[region]" value="<?php echo $billing->getRegion(); ?>" placeholder="State" required>
+                   
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="billing_country" class="form-label">Country</label>
+                    <select class="form-select" id="billing_country" name="billing[country]" required>
+                        <option disabled>Select country</option>
+                        <?php $selectedCountry = $billing->getCountry(); ?>
+                        <option value="India" <?php echo ($selectedCountry == 'India') ? 'selected' : ''; ?>>India</option>
+                        <option value="USA" <?php echo ($selectedCountry == 'USA') ? 'selected' : ''; ?>>USA</option>
+                        <option value="UK" <?php echo ($selectedCountry == 'UK') ? 'selected' : ''; ?>>UK</option>
+                        <option value="Canada" <?php echo ($selectedCountry == 'Canada') ? 'selected' : ''; ?>>Canada</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="billing_zipcode" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control validete-required validate-zipcode" id="billing_zipcode" name="billing[zipcode]" value="<?php echo $billing->getZipcode(); ?>" placeholder="Zip code" required>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="form-section">
+            <h4>Shipping Address</h4>
+            <input type="hidden" value="<?php echo $shipping->getAddressId(); ?>" name="shipping[address_id]">
+
+
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-check-input" id="same_as_billing" onclick="copyBilling()">
+                <label class="form-check-label" for="same_as_billing">Same as Billing Address</label>
+
+            </div>
+
+            <div class="mb-3">
+                <label for="shipping_street" class="form-label">Street Address</label>
+                <input type="text" class="form-control validate-required validate-address" id="shipping_street" name="shipping[street]" value="<?php echo $shipping->getStreet(); ?>" placeholder="Street address" required>
+              
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="shipping_city" class="form-label">City</label>
+                    <input type="text" class="form-control validate-required validate-name" id="shipping_city" name="shipping[city]" value="<?php echo $shipping->getCity(); ?>" placeholder="City" required>
+                   
+                </div>
+                <div class="col-md-6">
+                    <label for="shipping_region" class="form-label">Region (State)</label>
+                    <input type="text" class="form-control validate-required validate-name" id="shipping_region" name="shipping[region]" value="<?php echo $shipping->getRegion(); ?>" placeholder="State" required>
+                  
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="shipping_country" class="form-label">Country</label>
+                    <select class="form-select" id="shipping_country" name="shipping[country]" required>
+                        <option disabled>Select country</option>
+                        <?php $selectedCountry = $shipping->getCountry(); ?>
+                        <option value="India" <?php echo ($selectedCountry == 'India') ? 'selected' : ''; ?>>India</option>
+                        <option value="USA" <?php echo ($selectedCountry == 'USA') ? 'selected' : ''; ?>>USA</option>
+                        <option value="UK" <?php echo ($selectedCountry == 'UK') ? 'selected' : ''; ?>>UK</option>
+                        <option value="Canada" <?php echo ($selectedCountry == 'Canada') ? 'selected' : ''; ?>>Canada</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="shipping_zipcode" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control validate-required validate-zipcode" id="shipping_zipcode" name="shipping[zipcode]" value="<?php echo $shipping->getZipcode(); ?>" placeholder="Zip code" required>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+    </form>
+</div>
+
+<script>
+    function copyBilling() {
+        if (document.getElementById('same_as_billing').checked) {
+            document.getElementById('shipping_street').value = document.getElementById('billing_street').value;
+            document.getElementById('shipping_city').value = document.getElementById('billing_city').value;
+            document.getElementById('shipping_region').value = document.getElementById('billing_region').value;
+            document.getElementById('shipping_country').value = document.getElementById('billing_country').value;
+            document.getElementById('shipping_zipcode').value = document.getElementById('billing_zipcode').value;
+        } else {
+            document.getElementById('shipping_street').value = "";
+            document.getElementById('shipping_city').value = "";
+            document.getElementById('shipping_region').value = "";
+            document.getElementById('shipping_country').value = "";
+            document.getElementById('shipping_zipcode').value = "";
+        }
+    }
+
+    // document.getElementById('addressForm').addEventListener("submit", function(event) {
+    //     event.preventDefault();
+    //     let isValid = true;
+    //     let fname = document.getElementById('fname').value.trim();
+    //     let fnameError = document.getElementById('fnameError');
+
+    //     let nameRegex = /^[A-Za-z]{2,}$/;
+    //     if (!nameRegex.test(fname)) {
+    //         fnameError.textContent = "First name contain only letters."
+    //         isValid = false;
+    //     } else {
+    //         fname.textContent = "";
+    //     }
+
+    //     let lname = document.getElementById('lname').value.trim();
+    //     let lnameError = document.getElementById('lnameError');
+    //     if (!nameRegex.test(lname)) {
+    //         lnameError.textContent = "Last Name contains only letters."
+    //         isValid = false;
+    //     } else {
+    //         lnameError.textContent = "";
+    //     }
+
+    //     let email = document.getElementById('email').value.trim();
+    //     let emailError = document.getElementById('emailError');
+    //     let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    //     if (!emailRegex.test(email)) {
+    //         emailError.textContent = "Please enter a valid email address.";
+    //         isValid = false;
+    //     } else {
+    //         emailError.textContent = "";
+    //     }
+
+    //     let phone = document.getElementById('phone').value.trim();
+    //     let phoneError = document.getElementById('phoneError');
+    //     let phoneRegex = /^[0-9]{10}$/;
+
+    //     if (!phoneRegex.test(phone)) {
+    //         phoneError.textContent = "Phone number must be 10 digits and contain only numbers.";
+    //         isValid = false;
+    //     } else {
+    //         phoneError.textContent = "";
+    //     }
+
+    //     let street = document.getElementById('billing_street').value.trim();
+    //     let streetError = document.getElementById('streetError');
+    //     if (street.length < 3) {
+    //         streetError.textContent = "Street address must be at least 3 characters long.";
+    //         isValid = false;
+    //     } else {
+    //         streetError.textContent = "";
+    //     }
+
+    //     let city = document.getElementById('billing_city').value.trim();
+    //     let cityError = document.getElementById('cityError');
+    //     if (!nameRegex.test(city)) {
+    //         cityError.textContent = "City name must contain only letters and be at least 2 characters long.";
+    //         isValid = false;
+    //     } else {
+    //         cityError.textContent = "";
+    //     }
+
+    //     let region = document.getElementById('billing_region').value.trim();
+    //     let regionError = document.getElementById('regionError');
+    //     if (!nameRegex.test(region)) {
+    //         regionError.textContent = "State name must contain only letters and be at least 2 characters long.";
+    //         isValid = false;
+    //     } else {
+    //         regionError.textContent = "";
+    //     }
+
+    //     let zipcode = document.getElementById('billing_zipcode').value.trim();
+    //     let zipcodeError = document.getElementById('zipcodeError');
+    //     let zipcodeRegex = /^[0-9]{5,6}$/;
+    //     if (!zipcodeRegex.test(zipcode)) {
+    //         zipcodeError.textContent = "Zip code must be 5 or 6 digits.";
+    //         isValid = false;
+    //     } else {
+    //         zipcodeError.textContent = "";
+    //     }
+
+    //     if (!document.getElementById('same_as_billing').checked) {
+    //         let shippingStreet = document.getElementById('shipping_street').value.trim();
+    //         if (shippingStreet.length < 3) {
+    //             document.getElementById('shippingstreetError').textContent = "Shipping street address must be at least 3 characters long.";
+    //             isValid = false;
+    //         }
+
+    //         let shippingCity = document.getElementById('shipping_city').value.trim();
+    //         if (!nameRegex.test(shippingCity)) {
+    //             document.getElementById('shippingcityError').textContent = "Shipping city name must contain only letters and be at least 2 characters long.";
+    //             isValid = false;
+    //         }
+
+    //         let shippingRegion = document.getElementById('shipping_region').value.trim();
+    //         if (!nameRegex.test(shippingRegion)) {
+    //             document.getElementById('shippingregionError').textContent = "Shipping state name must contain only letters and be at least 2 characters long.";
+    //             isValid = false;
+    //         }
+
+    //         let shippingZipcode = document.getElementById('shipping_zipcode').value.trim();
+    //         if (!zipcodeRegex.test(shippingZipcode)) {
+    //             document.getElementById('shippingzipcodeError').textContent = "Shipping zip code must be 5 or 6 digits.";
+    //             isValid = false;
+    //         }
+    //     }
+
+    //     if (isValid) {
+    //         document.getElementById('addressForm').submit();
+    //     }
+
+    // })
+</script>

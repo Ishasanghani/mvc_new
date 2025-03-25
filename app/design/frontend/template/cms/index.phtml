@@ -1,0 +1,170 @@
+<?php
+$productDataList = $this->getProductList();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Banner Slider */
+        .banner-slider {
+            width: 90%;
+            height: 60vh;
+            margin: 10px;
+        }
+
+        .banner-slider .swiper-slide {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .banner-slider .swiper-slide.swiper-slide-active img {
+            transform: scale(1.1);
+        }
+
+        .banner-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 10px;
+        }
+
+        .product-next,
+        .product-prev,
+        .banner-next,
+        .banner-prev {
+            color: #D10063;
+            /* Arrow color */
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        /* Product Slider */
+        .product-slider {
+            padding: 20px;
+        }
+
+        .product-slider .swiper-slide {
+            transition: transform 0.3s ease;
+        }
+
+        .product-slider .swiper-slide.swiper-slide-active {
+            transform: scale(1.09);
+        }
+
+        .product-slider img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product-card {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product-name,
+        .product-price {
+            margin: 10px 0 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Banner Slider -->
+    <div class="swiper banner-slider mx-auto">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="media/banner/banner1.jpg" alt="Banner 1"></div>
+            <div class="swiper-slide"><img src="media/banner/banner2.jpg" alt="Banner 2"></div>
+            <div class="swiper-slide"><img src="media/banner/banner3.jpg" alt="Banner 3"></div>
+        </div>
+        <div class="banner-pagination swiper-pagination"></div>
+        <div class="banner-next swiper-button-next"></div>
+        <div class="banner-prev swiper-button-prev"></div>
+    </div>
+
+    <!-- Product Slider -->
+    <h2 style="text-align: center; margin: 40px 0 20px;">Our Products</h2>
+    <div class="swiper product-slider">
+        <div class="swiper-wrapper">
+            <?php foreach ($productDataList as $data): ?>
+                <div class="swiper-slide">
+                    <a href="<?php echo $this->getUrl('catalog/product/view') . '/?product_id=' . $data->getProductId(); ?>" style="text-decoration:none;">
+                        <div class="product-card card">
+                            <img src="http://localhost/mvc_new/<?php echo $data->getFilePath(); ?>" alt="Product">
+                            <div class="product-name"><?php echo htmlspecialchars($data->getName()); ?></div>
+                            <div class="product-price">₹<?php echo htmlspecialchars($data->getPrice()); ?></div>
+                        </div>
+                    </a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="product-pagination swiper-pagination"></div>
+        <div class="product-next swiper-button-next"></div>
+        <div class="product-prev swiper-button-prev"></div>
+    </div>
+    <div>
+        <a class="btn btn-dark" href="<?php echo $this->getUrl('catalog/product/list');?>">All Product</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        // Banner slider
+        new Swiper('.banner-slider', {
+            centeredSlides: true,
+            loop: true,
+            pagination: {
+                el: '.banner-pagination',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.banner-next',
+                prevEl: '.banner-prev'
+            },
+            autoplay: {
+                delay: 5000, // 5 seconds
+                disableOnInteraction: false
+            }
+        });
+
+        // Product slider
+        new Swiper('.product-slider', {
+            slidesPerView: 5,
+            spaceBetween: 20,
+            centeredSlides: true,
+            loop: true,
+            pagination: {
+                el: '.product-pagination',
+                clickable: true
+            },
+            navigation: {
+                nextEl: '.product-next',
+                prevEl: '.product-prev'
+            },
+            autoplay: {
+                delay: 4000, // 5 seconds
+                disableOnInteraction: false
+            }
+        });
+    </script>
+
+</body>
+
+</html>

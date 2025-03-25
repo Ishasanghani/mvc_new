@@ -1,0 +1,21 @@
+<?php $order  = $this->getInfoData();
+
+?>
+ <h2 class="text-center mb-4">Order Details</h2>
+    
+    <!-- Order Summary --> 
+    <div class="order-summary mb-4">
+        <h5>Order Summary</h5>
+        <p><strong>Customer Name:</strong> <?php echo $order->getCustomerId()?></p>
+        <p><strong>Email:</strong> <?php echo $order->getEmail()?></p>
+        <p><strong>Order ID:</strong> <?php echo $order->getOrderId()?></p>
+        <p><strong>Order Number:</strong> <?php echo $order->getOrderNumber()?></p>
+        <p><strong>Order Status:</strong> <span class="badge bg-success"><?php echo $order->getOrderStatus()?></span></p>
+        <p><strong>Payment Method:</strong> <?php echo $order->getPaymentMethod()?></p>
+        <p><strong>Coupon Code:</strong> <?php echo $order->getCouponCode()?></p>
+        <p><strong>Coupon Discount:</strong> <?php echo $order->getCouponDiscount()?></p>
+        <p><strong>Shipping Method:</strong> <?php echo $order->getShippingMethod()?></p>
+        <p><strong>Shipping Amount:</strong> <?php echo $order->getShippingAmount()?></p>
+        <p><strong>Total Amount:</strong> <?php echo $order->getTotalAmount()?></p>
+        <p><strong>Order Date:</strong> <?php echo $order->getCreatedAt()?></p>
+    </div>
