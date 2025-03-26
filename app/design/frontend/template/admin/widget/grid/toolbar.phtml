@@ -2,22 +2,26 @@
 $totalRecord = $this->getTotalRecord();
 ?>
 
-<div class="container mt-5">
-    <h5>Total Records: <span id="totalRecords"><?php echo $totalRecord; ?></span></h5>
+<div class="container mt-3 d-flex justify-content-between align-items-center flex-wrap">
+    <!-- Total Records -->
+    <h5 class="mb-0">Total Records: <span id="totalRecords"><?php echo $totalRecord; ?></span></h5>
 
     <!-- Limit Selection -->
-    <label for="limit">Records per page:</label>
-    <select id="limit" class="form-select w-auto d-inline">
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-    </select>
+    <div class="d-flex align-items-center">
+        <label for="limit" class="me-2">Records per page:</label>
+        <select id="limit" class="form-select w-auto">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+        </select>
+    </div>
 
     <!-- Pagination -->
     <nav>
-        <ul class="pagination justify-content-center mt-3" id="pagination"></ul>
+        <ul class="pagination mb-0" id="pagination"></ul>
     </nav>
 </div>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {

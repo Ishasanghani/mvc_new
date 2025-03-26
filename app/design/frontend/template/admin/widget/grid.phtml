@@ -1,0 +1,45 @@
+<?php $this->getChildHtml('toolbar');
+
+$columns = $this->getColumns();
+$collection = $this->getCollection()->getData();
+?>
+
+<div class="d-flex justify-content-end m-3 mx-4 gap-3">
+    <a href="<?php echo $this->getUrl("*/*/exportCsv") ?>" class="add-btn btn btn-success">Download Csv</a>
+    <a href="<?php echo $this->getUrl("*/*/new") ?>" class="add-btn btn btn-success">Add Category</a>
+</div>
+<div class="table-container">
+    <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+            <tr class="text-center">
+                <?php foreach ($columns as $column): ?>
+                    <th><?php echo $column['label']; ?></th>
+                <?php endforeach; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <?php foreach ($columns as $key => $column): ?>
+                    <td><?php $this->renderFilter($key) ?></td>
+                <?php endforeach; ?>
+            </tr>
+            <?php foreach ($collection as $data): ?>
+                <tr>
+                    <?php foreach ($columns as $key => $column): ?>
+                        <td>
+                            <?php
+                            if (!(($column['render'])=='link')) {
+                                echo $data->getData()[$column['data_index']] ?? '';
+                            } else {
+                                // Only set $id if both 'data_index' and 'action' are set, otherwise use empty string
+                                $id = $data->getData()[$column['data_index']] ;
+                                echo $this->renderColumn($key, $id); // Echo the result
+                            }
+                            ?>
+                        </td>
+                    <?php endforeach ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

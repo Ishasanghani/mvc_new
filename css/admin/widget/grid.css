@@ -1,0 +1,50 @@
+/* Table Styling */
+.table-container {
+    max-width: 90%;
+    margin: auto;
+    overflow-x: auto;
+}
+
+.table {
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table th {
+    background: #343a40;
+    color: #fff;
+    padding: 12px;
+}
+
+.table td {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* Action Buttons */
+.add-btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+}
+
+.add-btn:hover {
+    background: #28a745;
+    color: white;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .add-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}

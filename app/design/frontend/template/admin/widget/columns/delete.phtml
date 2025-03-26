@@ -1,0 +1,4 @@
+<?php $data = $this->getData();
+
+?>
+<a href="<?php echo $this->getUrl("*/*/delete").'/?delete_id='.$data['id']?>" class="<?php echo $data['class']?>" ><?php echo $data['action'];?></a>

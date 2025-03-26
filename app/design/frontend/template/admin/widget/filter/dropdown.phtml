@@ -1,0 +1,12 @@
+<?php
+$data = $this->getData();
+
+$options = $data['option'];
+$filterType = $data["filter"] ?? "text"; // Default to text if filter type is missing
+$label = $data["label"] ?? "Value"; // Default label if missing
+?>
+<select name="<?php echo $label; ?>" id="<?php echo $label ?>">
+    <?php foreach ($options as $option): ?>
+        <option><?php echo $option; ?></option>
+    <?php endforeach; ?>
+</select>

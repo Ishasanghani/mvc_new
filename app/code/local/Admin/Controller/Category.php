@@ -5,14 +5,9 @@ class Admin_Controller_Category extends Core_Controller_Admin_Action
 
     public function listAction()
     {
-
-
         $list = $this->getLayout()->createBlock('admin/category_list');
-
-        $this->getLayout()->getChild('content')->addChild('list', $list);
-
-
-        $this->getLayout()->getChild('head')->addCss('catalog/category/list.css');
+         $this->getLayout()->getChild('content')->addChild('list', $list);
+         $this->getLayout()->getChild('head')->addCss('admin/widget/grid.css');
         $this->getLayout()->toHtml();
     }
 

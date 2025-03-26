@@ -5,15 +5,16 @@ class Admin_Controller_Order extends Core_Controller_Admin_Action
     public function listAction()
     {
 
-        $list =  $this->getLayout()->createBlock('admin/order_list')
-            ->setTemplate('admin/order/list.phtml');
+        $list =  $this->getLayout()->createBlock('admin/order_list');
+            // ->setTemplate('admin/order/list.phtml');
         $this->getLayout()->getChild('content')->addChild('list', $list);
+        $this->getLayout()->getChild('head')->addCss('admin/widget/grid.css');
         $this->getLayout()->toHtml();
     }
 
     public function viewAction()
     {
-        $orderId = Mage::getModel('core/request')->getQuery('order_id');
+        $orderId = Mage::getModel('core/request')->getQuery('view_id');
         $orderModel = Mage::getModel('sale/order')->load($orderId);
 
         $orderView = $this->getLayout()->createBlock('admin/order_view');

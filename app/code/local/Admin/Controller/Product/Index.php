@@ -21,7 +21,7 @@ class Admin_Controller_Product_Index extends Core_Controller_Admin_Action
         $list =  $this->getLayout()->createBlock('Admin/product_index_list');
         // ->setTemplate('Admin/product/index/list.phtml');
         $this->getLayout()->getChild('content')->addChild('list', $list);
-        $this->getLayout()->getChild('head')->addCss('admin/list.css');
+        $this->getLayout()->getChild('head')->addCss('admin/widget/grid.css');
         $this->getLayout()->toHtml();
     }
 
