@@ -9,7 +9,6 @@ class Admin_Block_Category_List extends Admin_Block_Widget_Grid
       'filter' => 'Number',
       'data_index' => 'category_id',
       'label' => 'category_id',
-      'action' => ''
     ]);
     $this->addColumns('name', [
       'render' => 'text',
@@ -33,17 +32,17 @@ class Admin_Block_Category_List extends Admin_Block_Widget_Grid
 
     ]);
     $this->addColumns('edit', [
-      'render' => 'link',
+      'render' => 'edit',
       'action' => 'Edit',
       'label' => 'edit',
-      'data_index' => 'category_id',
+      'callback' => 'getEditUrl',
       'class' => 'btn btn-primary'
     ]);
     $this->addColumns('delete', [
-      'render' => 'link',
+      'render' => 'delete',
       'action' => 'Delete',
       'label' => 'delete',
-      'data_index' => 'category_id',
+      'callback' => 'getDeleteUrl',
       'class' => 'btn btn-danger'
     ]);
 
@@ -59,5 +58,15 @@ class Admin_Block_Category_List extends Admin_Block_Widget_Grid
 
 
 
+  }
+
+  public function getEditUrl($data)
+  {
+      return $this->getUrl("*/*/new")."/?edit_id=".$data['category_id'];
+  }
+
+  public function getDeleteUrl($data)
+  {
+     return $this->getUrl("*/*/delete")."/?delete_id=".$data['category_id'];
   }
 }

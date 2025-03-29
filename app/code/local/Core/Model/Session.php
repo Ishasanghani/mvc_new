@@ -26,5 +26,14 @@ class Core_Model_Session{
             unset($_SESSION[$key]);
         };
     } 
+
+    public function removeMessage($key)
+    {
+        if(isset($_SESSION['message'][$key])){
+            unset($_SESSION['message'][$key]);
+        }else{
+            return "";
+        };
+    } 
 }
 ?>

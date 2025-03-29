@@ -15,8 +15,11 @@ class Admin_Block_Widget_Grid extends Core_Block_Template
 
     public function addColumns($name, $data)
     {
-
-        $this->_columns[$name] = $data;
+        $value = $data['render'];
+        $block = Mage::getBlock('admin/widget_grid_columns_' . $value);
+        $block->setList($this);
+        $block->setData($data);
+        $this->_columns[$name] = $block;
     }
 
     public function setCollection($collection)
@@ -30,31 +33,7 @@ class Admin_Block_Widget_Grid extends Core_Block_Template
         return $this->_collection;
     }
 
-    public function renderFilter($columnName)
-    {
-        $data = $this->_columns[$columnName];
-
-        if (!empty($this->_columns[$columnName]['filter'])) {
-            $block = Mage::getBlock('admin/widget_grid_filter_' . $this->_columns[$columnName]['filter']);
-            $block->setData($data)
-                ->toHtml();
-        }
-    }
-
-    public function renderColumn($columnName,$id)
-    {
-        $data = $this->_columns[$columnName];
-        if(!empty($id)){
-            $data['id'] = $id;
-        }
-        $value = isset($data['action']) ? $data['action'] : '';
-        if($value !== ''){
-            $block = Mage::getBlock('admin/widget_grid_columns_' . $value);
-            $block->setData($data)
-                ->toHtml();
-        }
-
-    }
+ 
 
     public function getColumns()
     {

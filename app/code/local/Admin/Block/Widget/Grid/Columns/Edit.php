@@ -1,22 +1,18 @@
 <?php
-class Admin_Block_Widget_Grid_Columns_Edit extends Core_Block_Template
+class Admin_Block_Widget_Grid_Columns_Edit extends Admin_Block_Widget_Grid_Columns_Abstract 
 {
     protected $_data;
 
     public function __construct()
     {
-        $this->setTemplate('admin/widget/columns/edit.phtml');
+        //$this->setTemplate('admin/widget/columns/edit.phtml');
     }
-
-    public function setData($data)
-    {
-        $this->_data = $data;
-        return $this;
-    }
-
-    public function getData()
-    {
-        return $this->_data;
-    }
+   
+    public function rendor(){
+      //  print_r($this->getList());
+        $url = $this->getData()['callback'];
+        $html = "<a href='" . $this->getList()->$url($this->getRow()) . "' class='" . $this->_data['class'] . "'>" . $this->_data['label'] . "</a>";
+        return $html;
+    } 
 }
 ?>

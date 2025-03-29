@@ -45,12 +45,13 @@ class Catalog_Controller_Product
         //  print($query);
          
         //  print_r($collection);
-        echo "<pre>";
+        // echo "<pre>";
        
 
-        $cart = Mage::getSingleton('checkout/session')->getCart()->getItemCollection();
-        $cart->select(["sumtotal"=>"maintable.subtotal"]);
-        Mage::log($cart->prepareQuery());
+        // $cart = Mage::getSingleton('checkout/session')->getCart()->getItemCollection();
+        // $cart->select(["sumtotal"=>"maintable.subtotal"]);
+        // Mage::log($cart->prepareQuery());
 
+        
     }
 }

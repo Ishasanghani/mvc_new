@@ -13,14 +13,14 @@ $collection = $this->getCollection()->getData();
         <thead class="table-dark">
             <tr class="text-center">
                 <?php foreach ($columns as $column): ?>
-                    <th><?php echo $column['label']; ?></th>
+                    <th><?php echo $column->getData()['label']; ?></th>
                 <?php endforeach; ?>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <?php foreach ($columns as $key => $column): ?>
-                    <td><?php $this->renderFilter($key) ?></td>
+                    <td><?php echo $column->getFilter()->rendor() ?></td>
                 <?php endforeach; ?>
             </tr>
             <?php foreach ($collection as $data): ?>
@@ -28,13 +28,7 @@ $collection = $this->getCollection()->getData();
                     <?php foreach ($columns as $key => $column): ?>
                         <td>
                             <?php
-                            if (!(($column['render'])=='link')) {
-                                echo $data->getData()[$column['data_index']] ?? '';
-                            } else {
-                                // Only set $id if both 'data_index' and 'action' are set, otherwise use empty string
-                                $id = $data->getData()[$column['data_index']] ;
-                                echo $this->renderColumn($key, $id); // Echo the result
-                            }
+                               echo $column->setRoW($data->getData())->rendor();
                             ?>
                         </td>
                     <?php endforeach ?>

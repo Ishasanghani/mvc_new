@@ -1,8 +1,8 @@
 <?php 
-class Admin_Block_Widget_Grid_Columns_Link extends Admin_Block_Widget_Grid_Columns_Abstract {
+class Admin_Block_Widget_Grid_Columns_Dropdown extends Admin_Block_Widget_Grid_Columns_Abstract {
     protected $_data;
     public function __construct(){
-      //  $this->setTemplate('admin/widget/columns/link.phtml');
+        //$this->setTemplate('admin/widget/columns/dropdown.phtml');
     }
     public function setData($data)
     {
@@ -13,6 +13,10 @@ class Admin_Block_Widget_Grid_Columns_Link extends Admin_Block_Widget_Grid_Colum
     public function getData()
     {
         return $this->_data;
+    }
+
+    public function getCollection(){
+       print_r($this);
     }
 }
 

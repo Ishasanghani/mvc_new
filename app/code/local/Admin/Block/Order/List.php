@@ -20,13 +20,15 @@ class Admin_Block_Order_List extends Admin_Block_Widget_Grid
        
      ]);
      $this->addColumns('order_status', [
-       'render' => 'dropdown',
+       'render' => 'link',
        'filter' => 'Dropdown',
        'data_index' => 'order_status',
        'label' => 'order_status',
-       'option' => ['pending','cancel','shipping','delivered'],
-    
+       'option' => ['pending','cancelled','shipped','delivered'],
+       'action'=>'Dropdown'
      ]);
+
+
      $this->addColumns('email', [
       'render' => 'text',
       'filter' => 'Text',
@@ -43,11 +45,10 @@ class Admin_Block_Order_List extends Admin_Block_Widget_Grid
     ]);
      
      $this->addColumns('View', [
-       'render'=>'link',
+       'render'=>'View',
        'action' =>'view',
-       'url' => $this->getUrl('*/*/view') . '/?order_id=' ,
        'label' => 'view',
-       'data_index'=>'order_id',
+       'callback'=>'getViewUrl',
        'class'=>'btn btn-danger'
      ]);
  
@@ -59,9 +60,12 @@ class Admin_Block_Order_List extends Admin_Block_Widget_Grid
      // $toolbar = $this->getLayout()
      //   ->createBlock('admin/grid_toolbar')
      //   ->setTemplate('admin/grid/toolbar.phtml');
-     // $this->addChild('toolbar', $toolbar);
- 
-     
-      
+     // $this->addChild('toolbar', $toolbar);      
    }
+
+   public function getViewUrl($data)
+   {
+    return $this->getUrl("*/*/view")."/?view_id=".$data['order_id'];
+   }
+  
 }

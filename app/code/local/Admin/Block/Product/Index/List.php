@@ -70,19 +70,17 @@ class Admin_Block_Product_Index_List extends Admin_Block_Widget_Grid
         'label' => 'category_name',
       ]);
     $this->addColumns('edit', [
-      'render'=>'link',
+      'render'=>'Edit',
       'action' =>'Edit',
-      'url' => $this->getUrl('*/*/new') . '/?edit_id=' ,
       'label' => 'edit',
-      'data_index'=>'product_id',
+      'callback'=>'getEditUrl',
       'class'=>'btn btn-primary'
     ]);
     $this->addColumns('delete', [
-      'render'=>'link',
+      'render'=>'Delete',
       'action' =>'Delete',
-      'url' => $this->getUrl('*/*/delete') . '/?delete_id=' ,
       'label' => 'delete',
-      'data_index'=>'product_id',
+      'callback'=>'getDeleteUrl',
       'class'=>'btn btn-danger'
     ]);
 
@@ -100,6 +98,15 @@ class Admin_Block_Product_Index_List extends Admin_Block_Widget_Grid
 
     
      
+  }
+  public function getEditUrl($data)
+  {
+      return $this->getUrl("*/*/new")."/?edit_id=".$data['product_id'];
+  }
+
+  public function getDeleteUrl($data)
+  {
+     return $this->getUrl("*/*/delete")."/?delete_id=".$data['product_id'];
   }
 
 }

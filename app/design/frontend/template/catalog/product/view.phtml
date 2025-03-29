@@ -133,7 +133,7 @@ $url = Mage::getBaseUrl();
             </table>
 
             <!-- Buttons -->
-            <form action="http://localhost/mvc_new/checkout/cart_item/add" method="POST">
+            <form id="cartAdd" >
                 <input type="hidden" name="cart[product_id]" value="<?php echo $productData->getProductId() ?>" />
 
                 <label for="quantity">Quantity:</label>
@@ -158,5 +158,24 @@ $url = Mage::getBaseUrl();
         mainImage.src = thumbnail.src;
         thumbnail.src = tempSrc;
     }
+
+    $(document).ready(function(){
+        $('#cartAdd').submit(function(event){
+             event.preventDefault();
+             const form = $(this).serialize();
+             $.ajax({
+                url : "http://localhost/mvc_new/checkout/cart_item/add",
+                type : "POST",
+                data : form,
+                success : function(responce){
+                    alert("add a cart successfully");
+                },
+                error : function(xhr,status,error){
+                    console.log("Error ",error);
+                    alert("not add cart");
+                }
+             })
+        })
+    })
    
 </script>

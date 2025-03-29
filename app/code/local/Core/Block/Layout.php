@@ -13,6 +13,8 @@ class Core_Block_Layout extends Core_Block_Template
     {
         $header = $this->createBlock("page/header");
         $this->addChild('header', $header);
+        $message = $this->createBlock('core/message');
+        $this->addChild('message',$message);
         $head = $this->createBlock("page/head");
         $this->addChild('head', $head);
         $content = $this->createBlock("page/content");

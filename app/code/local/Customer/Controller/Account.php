@@ -22,16 +22,21 @@ class Customer_Controller_Account //extends Core_Controller_Customer_Action
         $loginData = Mage::getModel('core/request')->getParam('customer_account');
         $email = $loginData['email'];
         $password = $loginData['password_hash'];
+        $layout = Mage::getBlock('core/layout');
 
         $data = Mage::getModel('customer/account')->load($email, 'email');
         if (is_null($data->getData())) {
+            $layout->getLayout()->createBlock('core/message')
+            ->addMessage('error','login failed');
             header('location:http://localhost/mvc_new/Customer/Account/login');
+
         } else if ($data->getPassword() == $password) {
 
 
             Mage::getSingleton('core/session')->set('customer_id', $data->getCustomerId());
             $url = Mage::getBaseUrl();
-
+            $layout->getLayout()->createBlock('core/message')
+            ->addMessage('success','successfully login');
             header("Location: $url");
         }
     }
